@@ -32,7 +32,17 @@ set_target_properties(
   # RUNTIME_OUTPUT_DIRECTORY "${dir}/build"
 )
 
-add_subdirectory(${dir}/lib/liba)
+include(FetchContent)
+
+FetchContent_Declare(
+  liba
+  GIT_REPOSITORY https://github.com/ddvamp/example-lib.git
+  GIT_TAG e9a6ff1c75b6e6979c86fc5197796b894f549343
+)
+
+FetchContent_MakeAvailable(liba)
+
+target_include_directories(${name} PUBLIC ${liba_SOURCE_DIR}/..)
 
 target_link_libraries(${name} PRIVATE liba::liba)
 
@@ -42,5 +52,5 @@ if (NOT sources)
   message(FATAL_ERROR "Sources not found in ${dir}/src")
 endif()
 
-target_include_directories(${name} PUBLIC ${dir} ${dir}/lib)
+target_include_directories(${name} PUBLIC ${dir})
 target_sources(${name} PUBLIC ${sources})
