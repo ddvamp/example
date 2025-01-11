@@ -32,6 +32,15 @@ set_target_properties(
   # RUNTIME_OUTPUT_DIRECTORY "${dir}/build"
 )
 
+file(GLOB_RECURSE sources ${dir}/src/*.cpp)
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
+if (NOT sources)
+  message(FATAL_ERROR "Sources not found in ${dir}/src")
+endif()
+
+target_include_directories(${name} PRIVATE ${dir}/src)
+target_sources(${name} PRIVATE ${sources})
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -49,12 +58,3 @@ FetchContent_MakeAvailable(liba)
 target_include_directories(${name} PUBLIC ${dir}/lib)
 
 target_link_libraries(${name} PRIVATE liba::liba)
-
-file(GLOB_RECURSE sources ${dir}/src/*.cpp)
-source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
-if (NOT sources)
-  message(FATAL_ERROR "Sources not found in ${dir}/src")
-endif()
-
-target_include_directories(${name} PUBLIC ${dir})
-target_sources(${name} PUBLIC ${sources})
