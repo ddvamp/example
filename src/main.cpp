@@ -1,6 +1,6 @@
 #include "config.hpp"
 
-#include <liba-src/src/liba.hpp>
+#include <liba/src/liba.hpp>
 
 #include <format>
 #include <iostream>

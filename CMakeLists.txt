@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.31)
 
 project(
   example
@@ -37,12 +37,16 @@ include(FetchContent)
 FetchContent_Declare(
   liba
   GIT_REPOSITORY https://github.com/ddvamp/example-lib.git
-  GIT_TAG e9a6ff1c75b6e6979c86fc5197796b894f549343
+  GIT_TAG origin/main
+  GIT_SHALLOW ON
+  GIT_PROGRESS ON
+  SOURCE_DIR ${dir}/lib/liba
+  BINARY_DIR lib/liba
 )
 
 FetchContent_MakeAvailable(liba)
 
-target_include_directories(${name} PUBLIC ${liba_SOURCE_DIR}/..)
+target_include_directories(${name} PUBLIC ${dir}/lib)
 
 target_link_libraries(${name} PRIVATE liba::liba)
 
