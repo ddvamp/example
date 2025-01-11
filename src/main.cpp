@@ -1,5 +1,4 @@
-#include "config.hpp"
-
+#include <config.hpp>
 #include <liba/src/liba.hpp>
 
 #include <format>

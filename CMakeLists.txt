@@ -17,7 +17,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(name ${PROJECT_NAME})
 set(dir ${PROJECT_SOURCE_DIR})
 
-configure_file(${dir}/src/cmake/config.hpp.in ${dir}/src/config.hpp @ONLY)
+configure_file(${dir}/src/config.hpp.in ${dir}/src/cmake/config.hpp @ONLY)
 
 add_executable(${name})
 
@@ -29,7 +29,9 @@ set_target_properties(
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION}
 
-  # RUNTIME_OUTPUT_DIRECTORY "${dir}/build"
+  RUNTIME_OUTPUT_DIRECTORY "${dir}/bin"
+	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${dir}/bin/debug"
+	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${dir}/bin/release"
 )
 
 file(GLOB_RECURSE sources ${dir}/src/*.cpp)
@@ -38,7 +40,7 @@ if (NOT sources)
   message(FATAL_ERROR "Sources not found in ${dir}/src")
 endif()
 
-target_include_directories(${name} PRIVATE ${dir}/src)
+target_include_directories(${name} PRIVATE ${dir}/src ${dir}/src/cmake)
 target_sources(${name} PRIVATE ${sources})
 
 include(FetchContent)
@@ -54,7 +56,5 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(liba)
-
-target_include_directories(${name} PUBLIC ${dir}/lib)
 
 target_link_libraries(${name} PRIVATE liba::liba)

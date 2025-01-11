@@ -1,4 +1,7 @@
 build/
+bin/
+lib/
+src/cmake/
 !CMakeLists.txt
 .cache/
 .clang*
