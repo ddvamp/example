@@ -5,3 +5,4 @@ src/cmake/
 !CMakeLists.txt
 .cache/
 .clang*
+compile_commands.json

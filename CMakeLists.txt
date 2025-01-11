@@ -8,40 +8,52 @@ project(
   LANGUAGES CXX
 )
 
-if (NOT PROJECT_IS_TOP_LEVEL)
-  message(FATAL_ERROR "Project must be top-level")
-endif()
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 set(name ${PROJECT_NAME})
 set(dir ${PROJECT_SOURCE_DIR})
 
+if (NOT PROJECT_IS_TOP_LEVEL)
+  message(FATAL_ERROR "$The {name} project must be top-level")
+endif()
+
+include(GNUInstallDirs)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_DEBUG_POSTFIX d)
+
 configure_file(${dir}/src/config.hpp.in ${dir}/src/cmake/config.hpp @ONLY)
+
+# project target
 
 add_executable(${name})
 
 set_target_properties(
   ${name} PROPERTIES
+
   CXX_STANDARD 23
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
-  SOVERSION ${PROJECT_VERSION_MAJOR}
-  VERSION ${PROJECT_VERSION}
 
-  RUNTIME_OUTPUT_DIRECTORY "${dir}/bin"
+  VERSION ${PROJECT_VERSION}
+  SOVERSION ${PROJECT_VERSION_MAJOR}
+
 	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${dir}/bin/debug"
 	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${dir}/bin/release"
+  RUNTIME_OUTPUT_DIRECTORY "${dir}/bin/other"
+
+  DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX}
 )
 
 file(GLOB_RECURSE sources ${dir}/src/*.cpp)
-source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 if (NOT sources)
   message(FATAL_ERROR "Sources not found in ${dir}/src")
 endif()
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 target_include_directories(${name} PRIVATE ${dir}/src ${dir}/src/cmake)
 target_sources(${name} PRIVATE ${sources})
+
+# libraries
 
 include(FetchContent)
 
@@ -58,3 +70,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(liba)
 
 target_link_libraries(${name} PRIVATE liba::liba)
+
+# installation
+
+install(TARGETS ${name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
