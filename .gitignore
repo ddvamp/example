@@ -1,8 +1,11 @@
-build/
-bin/
-lib/
-src/cmake/
-!CMakeLists.txt
 .cache/
+.vscode/
+bin/
+build/
+lib/
+preset/
+src/cmake/
+
 .clang*
+CMakeUserPresets.json
 compile_commands.json

@@ -23,6 +23,10 @@ set(CMAKE_DEBUG_POSTFIX d)
 
 configure_file(${dir}/src/config.hpp.in ${dir}/src/cmake/config.hpp @ONLY)
 
+add_compile_definitions(${MY_COMPILE_DEFINITIONS})
+add_compile_options(${MY_COMPILE_OPTIONS})
+add_link_options(${MY_LINK_OPTIONS})
+
 # project target
 
 add_executable(${name})
@@ -46,9 +50,8 @@ set_target_properties(
 
 file(GLOB_RECURSE sources ${dir}/src/*.cpp)
 if (NOT sources)
-  message(FATAL_ERROR "Sources not found in ${dir}/src")
+  message(FATAL_ERROR "No source files found in ${dir}/src")
 endif()
-source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 target_include_directories(${name} PRIVATE ${dir}/src ${dir}/src/cmake)
 target_sources(${name} PRIVATE ${sources})
