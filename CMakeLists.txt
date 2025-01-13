@@ -19,9 +19,11 @@ include(GNUInstallDirs)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${dir}/bin/release)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${dir}/bin/debug)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/bin/other)
+set(bindir ${dir}/${CMAKE_INSTALL_BINDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${bindir}/release)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${bindir}/debug)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${bindir}/other)
+unset(bindir)
 
 set(CMAKE_DEBUG_POSTFIX d)
 
