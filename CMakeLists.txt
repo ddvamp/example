@@ -15,6 +15,10 @@ if (NOT PROJECT_IS_TOP_LEVEL)
   message(FATAL_ERROR "$The {name} project must be top-level")
 endif()
 
+if (NOT EXISTS ${dir}/src/main.cpp)
+  message(FATAL_ERROR "No main.cpp file found in ${dir}/src")
+endif()
+
 include(GNUInstallDirs)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -52,12 +56,8 @@ set_target_properties(
   DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX}
 )
 
-file(GLOB_RECURSE sources ${dir}/src/*.cpp)
-if (NOT sources)
-  message(FATAL_ERROR "No source files found in ${dir}/src")
-endif()
-
 target_include_directories(${name} PRIVATE ${dir}/src ${dir}/src/cmake)
+file(GLOB_RECURSE sources ${dir}/src/*.cpp)
 target_sources(${name} PRIVATE ${sources})
 
 # ------------------------------------------------------------------------------

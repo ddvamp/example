@@ -5,8 +5,12 @@
 #ifndef DDVAMP_EXAMPLE_CONFIG_HPP_INCLUDED_
 #define DDVAMP_EXAMPLE_CONFIG_HPP_INCLUDED_ 1
 
-#define EXAMPLE_VERSION_MAJOR @example_VERSION_MAJOR@
-#define EXAMPLE_VERSION_MINOR @example_VERSION_MINOR@
-#define EXAMPLE_VERSION_PATCH @example_VERSION_PATCH@
+namespace version {
+
+inline constexpr int kMajor = @CMAKE_PROJECT_VERSION_MAJOR@;
+inline constexpr int kMinor = @CMAKE_PROJECT_VERSION_MINOR@;
+inline constexpr int kPatch = @CMAKE_PROJECT_VERSION_PATCH@;
+
+} // namespace version
 
 #endif  /* DDVAMP_EXAMPLE_CONFIG_HPP_INCLUDED_ */
