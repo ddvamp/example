@@ -5,15 +5,17 @@ project(
   LANGUAGES CXX
 )
 
+set(name ${PROJECT_NAME})
+
 if (PROJECT_IS_TOP_LEVEL)
-  message(FATAL_ERROR "$The example-tests project must not be top-level")
+  message(FATAL_ERROR "The ${name} project must not be top-level")
 endif()
 
-add_executable(example-tests)
-target_sources(example-tests PRIVATE main.cpp)
+add_executable(${name})
+target_sources(${name} PRIVATE main.cpp)
 
 set_target_properties(
-  example-tests PROPERTIES
+  ${name} PROPERTIES
 
   CXX_STANDARD 23
   CXX_STANDARD_REQUIRED ON
