@@ -76,7 +76,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(liba)
 
-target_link_libraries(${name} PRIVATE liba::liba)
+target_link_libraries(${name} PRIVATE liba)
 
 # ------------------------------------------------------------------------------
 # installation
