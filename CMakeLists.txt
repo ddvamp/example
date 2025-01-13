@@ -19,6 +19,10 @@ include(GNUInstallDirs)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${dir}/bin/release)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${dir}/bin/debug)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/bin/other)
+
 set(CMAKE_DEBUG_POSTFIX d)
 
 configure_file(${dir}/src/config.hpp.in ${dir}/src/cmake/config.hpp @ONLY)
@@ -27,7 +31,9 @@ add_compile_definitions(${MY_COMPILE_DEFINITIONS})
 add_compile_options(${MY_COMPILE_OPTIONS})
 add_link_options(${MY_LINK_OPTIONS})
 
+# ------------------------------------------------------------------------------
 # project target
+# ------------------------------------------------------------------------------
 
 add_executable(${name})
 
@@ -41,10 +47,6 @@ set_target_properties(
   VERSION ${PROJECT_VERSION}
   SOVERSION ${PROJECT_VERSION_MAJOR}
 
-	RUNTIME_OUTPUT_DIRECTORY_DEBUG "${dir}/bin/debug"
-	RUNTIME_OUTPUT_DIRECTORY_RELEASE "${dir}/bin/release"
-  RUNTIME_OUTPUT_DIRECTORY "${dir}/bin/other"
-
   DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX}
 )
 
@@ -56,7 +58,9 @@ endif()
 target_include_directories(${name} PRIVATE ${dir}/src ${dir}/src/cmake)
 target_sources(${name} PRIVATE ${sources})
 
+# ------------------------------------------------------------------------------
 # libraries
+# ------------------------------------------------------------------------------
 
 include(FetchContent)
 
@@ -74,6 +78,25 @@ FetchContent_MakeAvailable(liba)
 
 target_link_libraries(${name} PRIVATE liba::liba)
 
+# ------------------------------------------------------------------------------
 # installation
+# ------------------------------------------------------------------------------
 
 install(TARGETS ${name} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# ------------------------------------------------------------------------------
+# tests and examples
+# ------------------------------------------------------------------------------
+
+string(TOUPPER ${name}_BUILD_TESTS tests)
+option(${tests} "Build tests for ${name}" OFF)
+if(${tests})
+  enable_testing()
+  add_subdirectory(test)
+endif()
+
+string(TOUPPER ${name}_BUILD_EXAMPLES examples)
+option(${examples} "Build examples for ${name}" OFF)
+if(${examples})
+  add_subdirectory(example)
+endif()
